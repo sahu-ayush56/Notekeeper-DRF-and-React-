@@ -1,0 +1,63 @@
+* {
+    box-sizing: border-box
+}
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  background-color: #819985;
+}
+.container-sm {
+  background-color: #000605;
+  overflow: hidden;
+  max-width: 500px;
+  height: 100vh;
+  /*margin : 0 auto;*/
+}
+.form-control{
+  resize : none;
+  height: 60vh;
+  margin-bottom: 5vh;
+}
+.header {
+  color: #e8e7cf;
+  font-size: 2em;
+  left: 0;
+  right: 0;
+  font-family: 'Lato', sans-serif;
+  position:fixed;
+}
+.note{
+  overflow: auto;
+  height: 90vh;
+  margin-top: 10vh;
+}
+
+.list {
+  text-decoration: none;
+}
+.item {
+  color: #a8a8a8;
+  background-color:#292929;
+  padding:10px;
+  cursor: pointer;
+}
+.delete{
+  background-color: #990500;
+  color: #BABABA;
+}
+.notes-list {
+  margin-top: 20px;
+  overflow: auto;
+  height: 80vh;
+  margin-top: 10vh;
+}
+
+.add{
+  background-color: #006400;
+  color: #BABABA;
+  /*height: 10vh;*/
+  /*margin-bottom: 2vh;*/
+}
+.sub{
+  font-size: 0.7em;
+}
