@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth.models import User
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -60,3 +61,9 @@ def Notewithid(request, id_no):
         note.delete()
         return Response("Note has been deleted")
 
+@api_view(['POST'])
+def Sigup(request):
+    cred = request.data
+    user = User.objects.create_user(username=cred['username'],password=cred['password'])
+    print(user)
+    return Response("User Created")

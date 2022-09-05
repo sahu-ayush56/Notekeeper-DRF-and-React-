@@ -12,10 +12,11 @@ export const AuthProvider = ({children}) => {
     let [user, setUser] = useState(()=>data?jwt_decode(data.access):null)
     let [loading, setLoading] = useState(true)
     let [access,setAccess] = useState(true)
+    let [available, setAvailable] = useState(true)
     let nav = useNavigate()
     const loginUser = async(e) => {
         e.preventDefault()
-        let response = await fetch('http://127.0.0.1:8000/api/token/',{
+        let response = await fetch('/api/token/',{
             method : 'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -38,6 +39,25 @@ export const AuthProvider = ({children}) => {
         localStorage.removeItem('authTokens')
         setToken(null)
         setUser(null)
+    }
+    const signupUser=async(e)=>{
+        e.preventDefault()
+        if(e.target.password.value!==e.target.confirm.value){
+            setAvailable(true)
+            return;
+        }
+        let response = await fetch('/api/signup/',{
+            method : 'POST',
+            headers : {
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({username:e.target.username.value,password:e.target.password.value})
+        })
+        if(response.status!==200){
+            setAvailable(false)
+            return;
+        }
+        nav('/')
     }
     const updateToken=async()=>{
         // console.log(token.refresh)
@@ -90,6 +110,9 @@ export const AuthProvider = ({children}) => {
         logoutUser:logoutUser,
         authToken : token,
         access : access,
+        signupUser: signupUser,
+        available : available,
+        setAvailable : setAvailable
     }
     return (
     <AuthContext.Provider value = {contextData}>
