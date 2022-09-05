@@ -26,6 +26,11 @@
   font-family: 'Lato', sans-serif;
   position:fixed;
 }
+.fa-sign-out{
+  margin-left:10px;
+  color:rgb(154, 84, 84);
+  cursor: pointer
+}
 .note{
   overflow: auto;
   height: 90vh;
@@ -60,4 +65,21 @@
 }
 .sub{
   font-size: 0.7em;
+}
+.form{
+  margin-top:30vh
+}
+.cred{
+  margin-top:10px;
+  width: 90%;
+  height: 50px;
+  text-align: center;
+  font-size: 1.05rem;
+}
+.credbut{
+  margin-top:25px;
+}
+.warn{
+  color: red;
+  display:block;
 }

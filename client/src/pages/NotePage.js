@@ -1,7 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
+import AuthContext from "../utils/AuthContext";
 const NotePage = () => {
   let [note, setNote] = useState([])
+  let {authToken, logoutUser} = useContext(AuthContext)
   let navigate = useNavigate()
   const noteid = useParams().id;
 
@@ -9,40 +11,61 @@ const NotePage = () => {
     getNote();
   },[])
   
+  let error_check=(response)=>{
+    if(response.status!==200){
+      logoutUser()
+    }
+  }
+
   let getNote=async()=>{
     if(noteid === "new"){return;}
-    let response = await fetch(`/api/notes/${noteid}/`)
+    let response = await fetch(`/api/notes/${noteid}/`,{
+      method:'GET',
+      headers : {
+        'Content-Type':'application/json',
+        'Authorization' : 'Bearer '+String(authToken?.access)
+      },
+    })
     let data = await response.json()
+    error_check(response)
     setNote(data)
   } 
 
   let deleteNote=async()=>{
-    fetch(`/api/notes/${noteid}/`,{
+    let response = await fetch(`/api/notes/${noteid}/`,{
       method:'DELETE',
-      header:{
-        'Content-Type':'application/json'
-      }
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization' : 'Bearer '+String(authToken?.access)
+      },
     })
-    setTimeout(()=>navigate('/'),100)
+    error_check(response)
+    setTimeout(()=>navigate('/notes'),100)
   }
 
   let updateNote=async()=>{
-    fetch(`/api/notes/${noteid}/`,{
+    let response = await fetch(`/api/notes/${noteid}/`,{
       method:'PUT',
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer '+String(authToken?.access)
       },
       body: JSON.stringify(note)
     })
+    // console.log(response.status)
+    error_check(response)
   }
   let createNote=async()=>{
-    fetch(`/api/notes/`,{
+    let response = await fetch(`/api/notes/`,{
       method:'POST',
       headers:{
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer '+String(authToken?.access)
       },
       body: JSON.stringify(note)
     })
+    // console.log(response.status)
+    error_check(response)
   }
   let handleSubmit=async()=>{
     if(noteid!=="new"&&!note.body){
@@ -54,11 +77,12 @@ const NotePage = () => {
     else if(note.body){
       createNote()
     }
-    setTimeout(()=>navigate('/'),100)
+    setTimeout(()=>navigate('/notes'),100)
   }
 
   return (
     <div className = "note">
+      {/* {console.log(authToken)} */}
       <textarea
         value={note?.body}
         className="form-control"

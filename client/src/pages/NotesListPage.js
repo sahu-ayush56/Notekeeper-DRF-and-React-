@@ -1,14 +1,23 @@
 import ListItem from "../components/ListItem"
 import {Link} from "react-router-dom"
-import {useState, useEffect} from "react"
+import {useState, useEffect, useContext} from "react"
+import AuthContext from "../utils/AuthContext";
 
 const NotesListPage = () => {
   let [notes,setNotes] = useState([])
+  let {authToken, logoutUser} = useContext(AuthContext)
   useEffect(()=>{
     getNotes();
   },[])
   let getNotes = async()=>{
-    let response = await fetch("/api/notes/")
+    let response = await fetch("/api/notes/",{
+      method:'GET',
+      headers : {
+        'Content-Type':'application/json',
+        'Authorization' : 'Bearer '+String(authToken?.access)
+      },
+    }
+    )
     let data = await response.json()
     setNotes(data)
   }
